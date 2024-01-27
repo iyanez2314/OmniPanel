@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -68,9 +69,21 @@ export default function LoginInputs({
         {isLoading ? (
           <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
         ) : (
-          <Icons.gitHub className="mr-2 h-4 w-4" />
+          <Icons.discord className="mr-2 h-4 w-4" />
         )}{" "}
         Discord
+      </Button>
+      <Button
+        onClick={() => signIn("google")}
+        type="button"
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+        ) : (
+          <Icons.google className="mr-2 h-4 w-4" />
+        )}{" "}
+        Google
       </Button>
     </div>
   );

@@ -12,10 +12,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Home() {
   const session = useSession();
-  console.log(session);
   const sessionData = session.data;
   useEffect(() => {
     setTimeout(() => {
@@ -32,21 +39,33 @@ export default function Home() {
           width={130}
           height={130}
         />
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Avatar>
-                <AvatarImage src={session?.data?.user?.image} />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{session?.data?.user?.name}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <DropdownMenu>
+          <TooltipProvider>
+            <Tooltip>
+              <DropdownMenuTrigger asChild>
+                <TooltipTrigger>
+                  <Avatar>
+                    <AvatarImage src={session?.data?.user?.image} />
+                    <AvatarFallback>OP</AvatarFallback>
+                  </Avatar>
+                </TooltipTrigger>
+              </DropdownMenuTrigger>
+              <TooltipContent>
+                <p>{session?.data?.user?.name}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>{session?.data?.user?.name}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem>Billing</DropdownMenuItem>
+            <DropdownMenuItem>Team</DropdownMenuItem>
+            <DropdownMenuItem>Subscription</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        {/* TODO: Make this into a component */}
       </div>
-
       {!sessionData ? <Login /> : <div className="text-white">Logged in</div>}
     </main>
   );

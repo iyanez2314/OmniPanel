@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
+import GoogleProvider from "next-auth/providers/google";
 
 const scopes = ["identify"].join(" ");
 
@@ -10,6 +11,17 @@ export const authOptions = {
       clientId: process.env.DISCORD_ID || "",
       clientSecret: process.env.DISCORD_SECRET || "",
       authorization: { params: { scope: scopes } },
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID || "",
+      clientSecret: process.env.GOOGLE_SECRET || "",
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
     }),
   ],
 };
