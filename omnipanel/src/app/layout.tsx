@@ -1,5 +1,5 @@
 "use client";
-import type { Metadata } from "next";
+// import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SessionProvider session={null}>{children}</SessionProvider>
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );
