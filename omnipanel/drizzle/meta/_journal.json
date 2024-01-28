@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1706422710288,
+      "tag": "0000_groovy_talon",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1706423963529,
+      "tag": "0001_overjoyed_loa",
+      "breakpoints": true
+    }
+  ]
+}
