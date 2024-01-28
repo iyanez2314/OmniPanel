@@ -5,25 +5,12 @@ import { invoke } from "@tauri-apps/api/tauri";
 import { useEffect } from "react";
 import Login from "./Login";
 import { useSession } from "next-auth/react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import UserAvatar, { Session } from "@/components/UserAvatar";
 
 export default function Home() {
-  const session = useSession();
+  const session = useSession() as Session;
   const sessionData = session.data;
+  console.log("Session date here in the home component=>", sessionData);
   useEffect(() => {
     setTimeout(() => {
       invoke("close_splashscreen");
@@ -39,32 +26,8 @@ export default function Home() {
           width={130}
           height={130}
         />
-        <DropdownMenu>
-          <TooltipProvider>
-            <Tooltip>
-              <DropdownMenuTrigger asChild>
-                <TooltipTrigger>
-                  <Avatar>
-                    <AvatarImage src={session?.data?.user?.image} />
-                    <AvatarFallback>OP</AvatarFallback>
-                  </Avatar>
-                </TooltipTrigger>
-              </DropdownMenuTrigger>
-              <TooltipContent>
-                <p>{session?.data?.user?.name}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>{session?.data?.user?.name}</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Team</DropdownMenuItem>
-            <DropdownMenuItem>Subscription</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
         {/* TODO: Make this into a component */}
+        <UserAvatar session={session} />
       </div>
       {!sessionData ? <Login /> : <div className="text-white">Logged in</div>}
     </main>
