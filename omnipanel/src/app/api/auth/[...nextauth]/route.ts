@@ -36,6 +36,7 @@ export const authOptions = {
     //   async authorize(credentials) {
     //     try {
     //       // Here we will use our custom database to authenticate
+    //      const user = await signUserInByCredentials(credentials.username);
     //     } catch (error) {
     //       // Return null if user data could not be retrieved
     //       console.error(error);
@@ -67,6 +68,7 @@ export const authOptions = {
     },
     async signIn({ user, account, profile, email, credentials }) {
       // Add custom logic here
+      // If the user is signing in with the credentials provider, we will need to check if the user exists in our database
       console.log("User signined in");
       console.log("signIn", { user, account, profile, email, credentials });
       return true;

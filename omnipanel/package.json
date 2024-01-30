@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "tauri": "tauri",
+    "td": "tauri dev",
     "migrate": "npx drizzle-kit push:pg"
   },
   "dependencies": {

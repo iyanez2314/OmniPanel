@@ -15,14 +15,65 @@ export default function LoginInputs({
   ...props
 }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<boolean>(false);
+  const [errorMessage, setErrorMessag] = React.useState<string>("");
 
-  async function onSubmit(event: React.SyntheticEvent) {
+  async function onSubmit(
+    event: React.FormEvent<HTMLFormElement>,
+    provider: string,
+  ) {
+    console.log("provider", provider);
     event.preventDefault();
-    setIsLoading(true);
 
-    setTimeout(() => {
+    console.log("here before submit");
+
+    // Sign in Request
+    console.log("here in conditional sign in");
+    setIsLoading(true);
+    const email = event.currentTarget.email.value;
+    const password = event.currentTarget.password.value;
+
+    const signUserIn = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (!signUserIn) {
+      console.log("error singin in");
       setIsLoading(false);
-    }, 3000);
+      setError(true);
+      setErrorMessag("Something went wrong. Please Try Again Later.");
+      return;
+    }
+
+    console.log("signUserIn", signUserIn);
+    setIsLoading(false);
+    return;
+
+    // Sign up Request
+    // const email = event.currentTarget.email.value;
+    // const password = event.currentTarget.password.value;
+
+    // setIsLoading(true);
+    // const request = await fetch("api/user", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ email, password }),
+    // });
+
+    // if (request.status !== 200) {
+    //   console.log("error", request);
+    //   setIsLoading(false);
+    //   setError(true);
+    //   setErrorMessag("Something went wrong. Please Try Again Later.");
+    // }
+
+    // console.log("request", request.json());
+    // setIsLoading(false);
+    // return;
   }
 
   return (
@@ -35,7 +86,7 @@ export default function LoginInputs({
         {/* Form to sign in */}
         <TabsContent value="signin" className="">
           <div className="flex flex-col gap-3 p-10">
-            <form onSubmit={onSubmit}>
+            <form onSubmit={(e) => onSubmit(e, "singin")}>
               <div className="grid gap-2">
                 <div className="grid gap-1">
                   <Label className="sr-only" htmlFor="email">
@@ -48,6 +99,15 @@ export default function LoginInputs({
                     autoCapitalize="none"
                     autoComplete="email"
                     autoCorrect="off"
+                    disabled={isLoading}
+                  />
+                  <Label className="sr-only" htmlFor="email">
+                    Password
+                  </Label>
+                  <Input
+                    id="password"
+                    placeholder="Password"
+                    type="password"
                     disabled={isLoading}
                   />
                 </div>
@@ -99,7 +159,7 @@ export default function LoginInputs({
         {/* Signup Form */}
         <TabsContent value="signup" className="">
           <div className="flex flex-col gap-3 p-10">
-            <form onSubmit={onSubmit}>
+            <form onSubmit={(e) => onSubmit(e, "signup")}>
               <div className="grid gap-2">
                 <div className="grid gap-1">
                   <Label className="sr-only" htmlFor="email">
