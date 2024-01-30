@@ -19,3 +19,6 @@ export const users = pgTable("users", {
   accountProvider: accountProviderEnum("account_provider"),
   createdAt: timestamp("created_at").defaultNow(),
 });
+
+export type User = typeof users.$inferSelect;
+export type NewUser = typeof users.$inferInsert;
