@@ -7,3 +7,5 @@ import { NewUser, User, users } from "./schema";
 export async function createUser(user: NewUser): Promise<User[]> {
   return db.insert(users).values(user).returning();
 }
+
+// create a new user with a discord account

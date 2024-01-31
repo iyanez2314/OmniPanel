@@ -4,6 +4,35 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { randomBytes, randomUUID } from "crypto";
 
+interface Profile {
+  id: string;
+  username: string;
+  avatar: string;
+  discriminator: string;
+  public_flags: number;
+  premium_type: number;
+  flags: number;
+  banner: string;
+  accent_color: number;
+  global_name: string;
+  avatar_decoration_data: string;
+  banner_color: string;
+  mfa_enabled: boolean;
+  locale: string;
+  image_url: string;
+}
+
+interface Account {
+  provider: string;
+  type: string;
+  providerAccountId: string;
+  token_type: string;
+  access_token: string;
+  expires_at: number;
+  refresh_token: string;
+  scope: string;
+}
+
 const scopes = ["identify"].join(" ");
 
 export const authOptions = {
@@ -81,11 +110,27 @@ export const authOptions = {
       return token;
     },
     // This is called when a user signs in with a provider
-    async signIn({ user, account, profile, email, credentials }: any) {
+    async signIn({
+      user,
+      account,
+      profile,
+      email,
+      credentials,
+    }: {
+      user: any;
+      account: Account;
+      profile: Profile;
+      email: string;
+      credentials: any;
+    }) {
       /*
        * if the user is signing in with a provider, we can use save the user to the db if they do not exist
        * we can then allow them to enter the app.
        */
+      if (account.provider === "discord") {
+        // handle discord sign in
+        // const user = await signUserInByDiscord(account);
+      }
       console.log("User Signed in with provider");
       console.log("signIn", { user, account, profile, email, credentials });
       return true;
