@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionProvider from "@/components/SessionProvider";
 import { getServerSession } from "next-auth";
+// import { allUsers } from "./db/dbfunctions";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,6 +18,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const sesison = await getServerSession();
+  // const users = await allUsers();
+
+  // console.log(users);
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>

@@ -10,7 +10,6 @@ import UserAvatar, { Session } from "@/components/UserAvatar";
 export default function Home() {
   const session = useSession() as Session;
   const sessionData = session.data;
-  console.log("Session date here in the home component=>", sessionData);
   useEffect(() => {
     setTimeout(() => {
       invoke("close_splashscreen");
@@ -28,6 +27,8 @@ export default function Home() {
         />
         {/* TODO: Make this into a component */}
         <UserAvatar session={session} />
+
+        {/* <button onClick={allUsers}>Test out the function</button> */}
       </div>
       {!sessionData ? <Login /> : <div className="text-white">Logged in</div>}
     </main>
