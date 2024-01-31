@@ -27,23 +27,28 @@ export const authOptions = {
     }),
     // TODO: Implement this later
     // The CredentialsProvider will allow us to look into our own database for authentication
-    // CredentialsProvider({
-    //   name: "Credentials",
-    //   credentials: {
-    //     username: { label: "Username", type: "text", placeholder: "jsmith" },
-    //     password: { label: "Password", type: "password" },
-    //   },
-    //   async authorize(credentials) {
-    //     try {
-    //       // Here we will use our custom database to authenticate
-    //      const user = await signUserInByCredentials(credentials.username);
-    //     } catch (error) {
-    //       // Return null if user data could not be retrieved
-    //       console.error(error);
-    //       return null;
-    //     }
-    //   },
-    // }),
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        /*
+         * If the user is singing in with credentials, we can query our databse to check if they exist
+         * if they do, we can allow them to enter the app.
+         */
+        console.log("Credentials", credentials);
+        try {
+          // Here we will use our custom database to authenticate
+          // const user = await signUserInByCredentials(credentials.username);
+        } catch (error) {
+          // Return null if user data could not be retrieved
+          console.error(error);
+          return null;
+        }
+      },
+    }),
   ],
   jwt: {
     secret: process.env.JWT_SECRET || "",
@@ -58,18 +63,30 @@ export const authOptions = {
     },
   },
   callbacks: {
-    async session({ session, user, token }) {
+    async session({ session, token }: any) {
       // Add custom logic here
+      if (token) {
+        console.log("TOKEN STUFF HERE");
+        console.log("session", { session, token });
+      }
+
       return session;
     },
-    async jwt({ token, user, account, profile, isNewUser }) {
+    async jwt({ token }: any) {
       // Add custom logic here
+      if (token) {
+        console.log("JWT STUFF HERE");
+        console.log("jwt", { token });
+      }
       return token;
     },
-    async signIn({ user, account, profile, email, credentials }) {
-      // Add custom logic here
-      // If the user is signing in with the credentials provider, we will need to check if the user exists in our database
-      console.log("User signined in");
+    // This is called when a user signs in with a provider
+    async signIn({ user, account, profile, email, credentials }: any) {
+      /*
+       * if the user is signing in with a provider, we can use save the user to the db if they do not exist
+       * we can then allow them to enter the app.
+       */
+      console.log("User Signed in with provider");
       console.log("signIn", { user, account, profile, email, credentials });
       return true;
     },
