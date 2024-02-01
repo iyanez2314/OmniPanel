@@ -15,8 +15,11 @@ export const users = pgTable("users", {
   fullName: text("full_name"),
   email: varchar("email", { length: 256 }).unique(),
   phone: varchar("phone", { length: 256 }),
+  username: varchar("username", { length: 256 }),
+  password: varchar("password", { length: 256 }),
   subscription: subscriptionEnum("subscription"),
-  accountProvider: accountProviderEnum("account_provider"),
+  accountProvider: accountProviderEnum("account_provider").notNull(),
+  providerId: varchar("provider_id", { length: 256 }),
   createdAt: timestamp("created_at").defaultNow(),
 });
 

@@ -3,6 +3,7 @@ import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { randomBytes, randomUUID } from "crypto";
+import { loginUser } from "@/app/db/UserFunctions";
 
 interface Profile {
   id: string;
@@ -31,6 +32,13 @@ interface Account {
   expires_at: number;
   refresh_token: string;
   scope: string;
+}
+
+export interface Credentials {
+  email: string | null;
+  password: string | null;
+  username: string | null;
+  id: string | null;
 }
 
 const scopes = ["identify"].join(" ");
@@ -62,15 +70,13 @@ export const authOptions = {
         username: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
-        /*
-         * If the user is singing in with credentials, we can query our databse to check if they exist
-         * if they do, we can allow them to enter the app.
-         */
-        console.log("Credentials", credentials);
+      async authorize(credentials: Credentials) {
         try {
           // Here we will use our custom database to authenticate
-          // const user = await signUserInByCredentials(credentials.username);
+          const user = await loginUser(credentials, "email");
+          if (user) {
+            return user;
+          }
         } catch (error) {
           // Return null if user data could not be retrieved
           console.error(error);
@@ -128,11 +134,19 @@ export const authOptions = {
        * we can then allow them to enter the app.
        */
       if (account.provider === "discord") {
+        await loginUser(
+          {
+            username: profile.username,
+            id: profile.id,
+            email: null,
+            password: null,
+          },
+          "discord",
+        );
+        console.log("signIn", { user, account, profile, email, credentials });
         // handle discord sign in
         // const user = await signUserInByDiscord(account);
       }
-      console.log("User Signed in with provider");
-      console.log("signIn", { user, account, profile, email, credentials });
       return true;
     },
   },
